@@ -1,0 +1,14 @@
+{
+  "name": "com.bow.csvdataimporter",
+  "displayName": "CSV Data Importer Tool",
+  "author": "bow",
+  "version": "1.0.0",
+  "description": "A Unity package for importing and parsing CSV data files.",
+  "unity": "2020.3",
+  "dependencies": {},
+  "keywords": [
+    "csv",
+    "data",
+    "import"
+  ]
+}
