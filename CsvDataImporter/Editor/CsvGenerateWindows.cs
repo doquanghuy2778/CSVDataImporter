@@ -60,13 +60,13 @@ namespace  CSvDataImporter.Editor
 
             if (GUILayout.Button("Generate", GUILayout.Height(30), GUILayout.Width(150)))
             {
-                // if(this.SheetUrl == "")
-                // {
-                //     Debug.LogError("Sheet URL is empty!");
-                //     return;
-                // }
-                //CSVImportManger.DownloadCsvData(this);
-                CSVImportManger.CreateFolder(this);
+                 if(this.SheetUrl == "")
+                 {
+                     Debug.LogError("Sheet URL is empty!");
+                     return;
+                 }
+                 CSVImportManger.CreateFolder(this);
+                 CSVImportManger.DownloadCsvData(this);
             }
 
             GUILayout.FlexibleSpace();
