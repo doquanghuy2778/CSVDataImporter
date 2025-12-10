@@ -65,7 +65,7 @@ namespace  CSvDataImporter.Editor
                      Debug.LogError("Sheet URL is empty!");
                      return;
                  }
-                 CSVImportManger.ProcessData(this);
+                 CsvDataImporter.StartProcess(this);
             }
 
             GUILayout.FlexibleSpace();
