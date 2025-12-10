@@ -15,7 +15,7 @@ namespace  CSvDataImporter.Editor
     public class CsvDataImporterWindow : EditorWindow
     {
         public string SheetUrl     { get; private set; } = "";
-        public string OutputFolder { get; private set; } = "Assets/DataSO";
+        public string OutputFolder { get; private set; } = "DataSO";
         public string SOName       { get; private set; } = "";
 
         private void OnGUI()
@@ -65,8 +65,8 @@ namespace  CSvDataImporter.Editor
                      Debug.LogError("Sheet URL is empty!");
                      return;
                  }
-                 CSVImportManger.CreateFolder(this);
                  CSVImportManger.DownloadCsvData(this);
+                 CSVImportManger.CreateFolder(this);
             }
 
             GUILayout.FlexibleSpace();
