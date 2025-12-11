@@ -11,7 +11,7 @@ public class CsvDataImporter
     private const string PREF_IS_PROCESSING = "CsvImporter_IsProcessing";
     private const string PREF_SO_NAME = "CsvImporter_SOName";
     private const string PREF_OUTPUT_FOLDER = "CsvImporter_OutputFolder";
-    private const string PREF_CSV_CONTENT = "CsvImporter_CsvContent"; // Lưu tạm nội dung CSV
+    private const string PREF_CSV_CONTENT = "CsvImporter_CsvContent";
 
     public static void StartProcess(CsvDataImporterWindow view)
     {
@@ -21,13 +21,12 @@ public class CsvDataImporter
         EditorPrefs.SetBool(PREF_IS_PROCESSING, true);
         EditorPrefs.SetString(PREF_SO_NAME, view.SOName);
         EditorPrefs.SetString(PREF_OUTPUT_FOLDER, view.OutputFolder);
-        EditorPrefs.SetString(PREF_CSV_CONTENT, csvData); // Lưu nội dung CSV
+        EditorPrefs.SetString(PREF_CSV_CONTENT, csvData);
 
         CreateFolder(view.OutputFolder);
 
         GenerateClassScript(view.OutputFolder, view.SOName, csvData);
 
-        Debug.Log("Đang tạo Class và biên dịch lại... Vui lòng đợi.");
         AssetDatabase.Refresh();
     }
 
@@ -42,7 +41,6 @@ public class CsvDataImporter
         string outputFolder = EditorPrefs.GetString(PREF_OUTPUT_FOLDER);
         string csvData = EditorPrefs.GetString(PREF_CSV_CONTENT);
 
-        Debug.Log("Biên dịch xong! Bắt đầu tạo Scriptable Objects...");
         GenerateScriptableObjects(outputFolder, soName, csvData);
 
         EditorPrefs.DeleteKey(PREF_CSV_CONTENT);
@@ -75,7 +73,7 @@ public class CsvDataImporter
         }
         catch (Exception e)
         {
-            Debug.LogError("Lỗi tải CSV: " + e.Message + "\nURL: " + url);
+            Debug.LogError("Error down csv file: " + e.Message + "\nURL: " + url);
             return null;
         }
     }
@@ -127,7 +125,7 @@ public class CsvDataImporter
             string fieldName = fields[i].Trim();
             if(!string.IsNullOrEmpty(fieldName))
             {
-                sb.AppendLine($"    public {type} {fieldName};");
+                sb.AppendLine($" public {type} {fieldName};");
             }
         }
 
@@ -137,7 +135,6 @@ public class CsvDataImporter
 
         string path = $"{outputFolder}/{className}.cs";
         File.WriteAllText(path, sb.ToString());
-        Debug.Log($"Đã tạo file class tại: {path}");
     }
 
     private static void GenerateScriptableObjects(string outputFolder, string soName, string csvData)
@@ -157,7 +154,6 @@ public class CsvDataImporter
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
-        Debug.Log("<color=green>HOÀN TẤT QUÁ TRÌNH IMPORT!</color>");
     }
 
     private static void CreateSO(string outputFolder, string soName, string[] fields, string[] types, string[] values, int index)
@@ -171,7 +167,6 @@ public class CsvDataImporter
 
         if (type == null)
         {
-            Debug.LogError($"Vẫn không tìm thấy Class '{soName}'. Hãy đảm bảo tên Class trong CSV trùng với tên file.");
             return;
         }
 
@@ -196,7 +191,7 @@ public class CsvDataImporter
             }
             catch(Exception ex)
             {
-                Debug.LogWarning($"Lỗi parse dữ liệu dòng {index}, cột {fieldName}: {ex.Message}");
+                Debug.LogWarning($"Error parse {index}, colum {fieldName}: {ex.Message}");
             }
         }
 
