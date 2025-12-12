@@ -3,6 +3,7 @@ using UnityEditor;
 using System.IO;
 using System.Net;
 using System;
+using System.Linq;
 using System.Text;
 using CSvDataImporter.Editor;
 
@@ -48,32 +49,33 @@ public class CsvDataImporter
 
     private static string DownloadCsvData(string url)
     {
-        if (url.Contains("docs.google.com") && url.Contains("/edit"))
-        {
-            url = url.Replace("/edit", "/export?format=csv");
-
-            if (url.Contains("#gid="))
-            {
-                url = url.Replace("#gid=", "&gid=");
-            }
-        }
-
-        Debug.Log("Downloading from URL: " + url);
-
         try
         {
+            if (url.Contains("docs.google.com/spreadsheets"))
+            {
+                var uri = new Uri(url);
+
+                var segments = uri.AbsolutePath.Split('/');
+                var sheetId  = segments[segments.ToList().IndexOf("d") + 1];
+
+                var gid = "0";
+                if (uri.Fragment.StartsWith("#gid="))
+                    gid = uri.Fragment.Replace("#gid=", "");
+
+                url = $"https://docs.google.com/spreadsheets/d/{sheetId}/export?format=csv&gid={gid}";
+            }
+
+            Debug.Log("Downloading from URL: " + url);
+
             using (var client = new WebClient())
             {
                 client.Encoding = System.Text.Encoding.UTF8;
-                string data = client.DownloadString(url);
-
-                Debug.Log("CSV Data Downloaded Successfully");
-                return data;
+                return client.DownloadString(url);
             }
         }
         catch (Exception e)
         {
-            Debug.LogError("Error down csv file: " + e.Message + "\nURL: " + url);
+            Debug.LogError($"Error down csv file: {e.Message}\nURL: {url}");
             return null;
         }
     }
