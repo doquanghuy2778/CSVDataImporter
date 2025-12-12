@@ -26,7 +26,7 @@ namespace  CSvDataImporter.Editor
             this.FillTheSheetUrl();
             this.FillTheSOName();
             this.ButtonGenerate();
-            this.ButtonRefresh();
+            // this.ButtonRefresh();
         }
 
         private void OutputFolderSelect()
