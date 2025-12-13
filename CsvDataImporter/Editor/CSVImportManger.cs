@@ -211,7 +211,7 @@ public class CsvDataImporter
         if (string.IsNullOrEmpty(value))
         {
             if (type == "string") return "";
-            if (type == "int" || type == "float") return 0;
+            if (type == "int" || type == "float" || type == "double" || type == "long") return 0;
             if (type == "bool") return false;
         }
 
@@ -221,6 +221,8 @@ public class CsvDataImporter
             "float" => float.Parse(value),
             "string" => value,
             "bool" => bool.Parse(value),
+            "double" => double.Parse(value),
+            "long" => long.Parse(value),
             _ => value
         };
     }
